@@ -1,6 +1,7 @@
-from PyQt5.QtWidgets import QMainWindow, QAction
+from PyQt5.QtWidgets import QMainWindow
 from gui.main_window_layout import MainWindowLayout
 from data_acquisition.accelerator_interface import AcceleratorInterface
+from analysis.handle_data import DataAnalyzer
 import logging
 import sys
 
@@ -12,8 +13,6 @@ class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         """Initialize the main window."""
-        # Initialize the main window
-        logging.info('Initializing main window.')
         super(MainWindow, self).__init__(parent)
         
         # Set up the main layout
@@ -25,11 +24,15 @@ class MainWindow(QMainWindow):
 
     def initialize(self):
         """Initialize the application components."""
+        # Connect to the accelerator and set up triggers
         self.connect_to_accelerator()
         self.setup_triggers()        
+        # Create an instance of the DataAnalyzer
+        self.data_analyzer = DataAnalyzer()
 
     def connect_to_accelerator(self):
         """Connect to the accelerator interface."""
+        # Connect to the accelerator interface
         logging.info('Connecting to accelerator.')
         self.accelerator_interface = AcceleratorInterface()
         
@@ -38,18 +41,13 @@ class MainWindow(QMainWindow):
 
     def setup_triggers(self):
         """Set up event triggers for user actions."""
+        # Set up event triggers for user actions
         logging.info('Setting up triggers.')
-        
-        # Option 1: Using QAction (commented out)
-        # retrieve_action = QAction("Retrieve Data", self)
-        # retrieve_action.triggered.connect(self.retrieve_data)
-        # self.main_layout.retrieve_button.addAction(retrieve_action)
-
-        # Option 2: Directly connecting to clicked signal
         self.main_layout.retrieve_button.clicked.connect(self.retrieve_data)
 
     def retrieve_data(self):
         """Retrieve data from the accelerator."""
+        # Retrieve data from the accelerator
         logging.info('Retrieving data.')
         self.accelerator_interface.get_data()
 
@@ -58,3 +56,7 @@ class MainWindow(QMainWindow):
         # Handle the acquired data (update GUI, perform analysis, etc.)
         logging.info('Handling data...')
         logging.info("Data acquired: %s", data)
+        
+        # Perform analysis using the DataAnalyzer
+        analysis_result = self.data_analyzer.perform_analysis(data)
+        logging.info("Analysis Result: %s", analysis_result)

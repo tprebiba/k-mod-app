@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject, pyqtSignal
+import numpy as np
 
 class AcceleratorInterface(QObject):
     """Interface for interacting with the accelerator."""
@@ -19,7 +20,7 @@ class AcceleratorInterface(QObject):
     def get_data(self):
         """Retrieve data from the accelerator."""
         # Simulate getting data from the accelerator
-        data = 'my accelerator data'
+        data = [0,1,2,3,4,5,6]
         
         # Emit the data_acquired signal with the retrieved data
         self.data_acquired.emit(data)
