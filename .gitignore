@@ -1,0 +1,9 @@
+envkmod/
+source_files/
+__pycache__/
+.idea
+*.pyc
+*.pyo
+*.pkl
+*.parquet
+*.png
